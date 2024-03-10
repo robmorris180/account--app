@@ -1,4 +1,4 @@
-import { ReactNode, createContext, useContext, useState } from "react";
+import { ReactNode, createContext, useContext, useState, useMemo } from "react";
 import { Quote } from "../pages/QuoteHistory/QuoteHistory";
 
 type QuotesContextProviderProps = {
@@ -17,13 +17,16 @@ export function QuotesContextProvider({
 }: QuotesContextProviderProps) {
   const [quotes, setQuotes] = useState<Quote[]>([]);
 
+  const contextValue = useMemo(
+    () => ({
+      quotes,
+      setQuotes,
+    }),
+    [quotes, setQuotes]
+  );
+
   return (
-    <QuotesContext.Provider
-      value={{
-        quotes,
-        setQuotes,
-      }}
-    >
+    <QuotesContext.Provider value={contextValue}>
       {children}
     </QuotesContext.Provider>
   );
